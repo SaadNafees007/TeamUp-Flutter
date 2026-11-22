@@ -260,9 +260,9 @@ class MyTeamScreen extends ConsumerWidget {
                       vertical: 12,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardTheme.color ?? Colors.white,
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.border),
+                      border: Border.all(color: Theme.of(context).dividerColor),
                     ),
                     child: Row(
                       children: [
@@ -320,9 +320,9 @@ class MyTeamScreen extends ConsumerWidget {
                       vertical: 12,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardTheme.color ?? Colors.white,
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.border),
+                      border: Border.all(color: Theme.of(context).dividerColor),
                     ),
                     child: Row(
                       children: [
@@ -374,9 +374,9 @@ class MyTeamScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardTheme.color ?? Colors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: Theme.of(context).dividerColor),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -703,7 +703,7 @@ class MyTeamScreen extends ConsumerWidget {
                 margin: const EdgeInsets.symmetric(vertical: 6),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).cardTheme.color ?? Colors.white,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
                     color: AppColors.statusPending.withValues(alpha: 0.5),

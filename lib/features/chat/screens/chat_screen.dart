@@ -126,7 +126,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           vertical: 10,
                         ),
                         decoration: BoxDecoration(
-                          color: isMe ? AppColors.primaryIndigo : Colors.white,
+                          color: isMe
+                              ? AppColors.primaryIndigo
+                              : (Theme.of(context).cardTheme.color ?? Colors.white),
                           borderRadius: BorderRadius.only(
                             topLeft: const Radius.circular(16),
                             topRight: const Radius.circular(16),
@@ -135,7 +137,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           ),
                           border: isMe
                               ? null
-                              : Border.all(color: AppColors.border),
+                              : Border.all(color: Theme.of(context).dividerColor),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withValues(alpha: 0.04),
@@ -194,9 +196,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           // Message input bar
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              border: Border(top: BorderSide(color: AppColors.border)),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardTheme.color ?? Colors.white,
+              border: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
             ),
             child: SafeArea(
               child: Row(
