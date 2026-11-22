@@ -53,8 +53,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       missingFields.add('Department');
     }
 
-    // Semester: 10%
-    if (profile.semester >= 1 && profile.semester <= 8) {
+    // Semester: 10% (competition constraint: 4-8 eligible)
+    if (profile.semester >= 4 && profile.semester <= 8) {
       score += 10;
     } else {
       missingFields.add('Semester');

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:uuid/uuid.dart';
+import '../../../core/constants/app_constants.dart';
 import '../../../data/models/team.dart';
 import '../../../data/models/team_role.dart';
 import '../../../data/models/team_task.dart';
@@ -203,6 +204,8 @@ class TeamNotifier extends StateNotifier<TeamState> {
     if (state.team == null) return;
     final team = state.team!;
     if (team.memberIds.contains(student.id)) return; // Avoid duplicates
+    // Enforce competition constraint: max 3 members
+    if (team.memberIds.length >= AppConstants.maxTeamSize) return;
 
     final updatedMembers = [...team.memberIds, student.id];
     final updatedRoles = List<TeamRole>.from(team.roles);

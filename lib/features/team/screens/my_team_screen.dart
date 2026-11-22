@@ -215,19 +215,19 @@ class MyTeamScreen extends ConsumerWidget {
                 ],
                 const SizedBox(height: 16),
 
-                // Metrics Row
+                // Metrics Row (Competition constraint: max 3 members)
                 Row(
                   children: [
                     _buildMetricPill(
                       icon: Icons.people_rounded,
                       label: 'Members',
-                      value: '${team.totalMembersCount}',
+                      value: '${team.totalMembersCount}/${AppConstants.maxTeamSize}',
                     ),
                     const SizedBox(width: 10),
                     _buildMetricPill(
                       icon: Icons.person_add_alt_1_rounded,
-                      label: 'Open Roles',
-                      value: '${team.openRolesCount}',
+                      label: team.totalMembersCount >= AppConstants.maxTeamSize ? 'Status' : 'Open Slots',
+                      value: team.totalMembersCount >= AppConstants.maxTeamSize ? 'Team Full' : '${AppConstants.maxTeamSize - team.totalMembersCount}',
                     ),
                     const SizedBox(width: 10),
                     _buildMetricPill(

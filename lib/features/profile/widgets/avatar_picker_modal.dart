@@ -21,16 +21,21 @@ class AvatarPickerModal extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentAvatar = ref.watch(profileProvider).profile.avatar;
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardTheme.color ?? Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.85,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
           // Drag handle
           Center(
             child: Container(
@@ -168,7 +173,9 @@ class AvatarPickerModal extends ConsumerWidget {
           ),
         ],
       ),
-    );
+    ),
+  ),
+);
   }
 
   Future<void> _pickFromGallery(BuildContext context, WidgetRef ref) async {

@@ -46,6 +46,17 @@ class AppConstants {
   static const String universityName =
       'COMSATS University Islamabad, Wah Campus';
 
+  // VisioSpark FA26 Official Competition Constraints
+  static const List<int> eligibleSemesters = [4, 5, 6, 7, 8];
+  static const int minEligibleSemester = 4;
+  static const int maxEligibleSemester = 8;
+  static const int minTeamSize = 2;
+  static const int maxTeamSize = 3;
+
+  // Demo Credentials for Competition Evaluation
+  static const String demoEmail = 'demo@teamup.app';
+  static const String demoPassword = 'TeamUp123';
+
   static const List<String> departments = [
     'Computer Science',
     'Software Engineering',

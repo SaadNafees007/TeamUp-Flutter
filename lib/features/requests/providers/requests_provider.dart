@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:uuid/uuid.dart';
+import '../../../core/constants/app_constants.dart';
 import '../../../data/models/team_request.dart';
 import '../../../data/models/student_profile.dart';
 import '../../../data/local_storage/local_store.dart';
@@ -100,6 +101,13 @@ class RequestsNotifier extends StateNotifier<RequestsState> {
     final currentRequests = List<TeamRequest>.from(state.requests);
     final index = currentRequests.indexWhere((r) => r.id == requestId);
     if (index == -1) return;
+
+    // Enforce competition constraint: max 3 members (including leader)
+    final teamState = _ref.read(teamProvider);
+    if (teamState.team != null &&
+        teamState.team!.memberIds.length >= AppConstants.maxTeamSize) {
+      return; // Team is full — silently block (UI should also disable button)
+    }
 
     final request = currentRequests[index];
     final updatedRequest = request.copyWith(status: 'accepted');

@@ -233,8 +233,8 @@ class _FilterModalState extends ConsumerState<FilterModal> {
                     Text(
                       filterState.minSemester == null &&
                               filterState.maxSemester == null
-                          ? 'Any Semester (1 - 8)'
-                          : 'Sem ${filterState.minSemester ?? 1} - Sem ${filterState.maxSemester ?? 8}',
+                          ? 'Any Eligible Semester (4 - 8)'
+                          : 'Sem ${filterState.minSemester ?? 4} - Sem ${filterState.maxSemester ?? 8}',
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -258,26 +258,26 @@ class _FilterModalState extends ConsumerState<FilterModal> {
                       },
                     ),
                     ChoiceChip(
-                      label: const Text('Junior (1 - 4)'),
+                      label: const Text('4th Semester'),
                       selected:
-                          filterState.minSemester == 1 &&
+                          filterState.minSemester == 4 &&
                           filterState.maxSemester == 4,
                       onSelected: (selected) {
                         notifier.setSemesterRange(
-                          selected ? 1 : null,
+                          selected ? 4 : null,
                           selected ? 4 : null,
                         );
                       },
                     ),
                     ChoiceChip(
-                      label: const Text('Senior (5 - 8)'),
+                      label: const Text('Mid (5 - 6)'),
                       selected:
                           filterState.minSemester == 5 &&
-                          filterState.maxSemester == 8,
+                          filterState.maxSemester == 6,
                       onSelected: (selected) {
                         notifier.setSemesterRange(
                           selected ? 5 : null,
-                          selected ? 8 : null,
+                          selected ? 6 : null,
                         );
                       },
                     ),

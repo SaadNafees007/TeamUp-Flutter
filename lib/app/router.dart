@@ -1,4 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../data/local_storage/local_store.dart';
+import '../features/auth/screens/splash_screen.dart';
+import '../features/auth/screens/login_screen.dart';
+import '../features/auth/screens/register_screen.dart';
 import '../features/discover/screens/discover_screen.dart';
 import '../features/matching/screens/best_matches_screen.dart';
 import '../features/requests/screens/requests_screen.dart';
@@ -7,14 +12,52 @@ import '../features/profile/screens/profile_screen.dart';
 import 'navigation_shell.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/discover',
+  initialLocation: '/splash',
+  redirect: (BuildContext context, GoRouterState state) {
+    final activeUserId = LocalStore.getActiveSessionUserId();
+    final loc = state.matchedLocation;
+    final isSplash = loc == '/splash';
+    final isAuthRoute = loc == '/login' || loc == '/register';
+
+    if (activeUserId == null) {
+      // Unauthenticated users can only access splash, login, and register
+      if (isSplash || isAuthRoute) return null;
+      return '/login';
+    }
+
+    // Authenticated users trying to access login/register get redirected to discover
+    if (isAuthRoute) {
+      return '/discover';
+    }
+
+    return null;
+  },
   routes: [
+    // 1. Splash Screen
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
+
+    // 2. Login Screen
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
+    ),
+
+    // 3. Register Screen
+    GoRoute(
+      path: '/register',
+      builder: (context, state) => const RegisterScreen(),
+    ),
+
+    // 4. Authenticated Main Shell (5 Bottom Nav Destinations)
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return NavigationShellScaffold(navigationShell: navigationShell);
       },
       branches: [
-        // 1. Discover
+        // Discover
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -23,7 +66,7 @@ final appRouter = GoRouter(
             ),
           ],
         ),
-        // 2. Best Matches
+        // Best Matches
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -32,7 +75,7 @@ final appRouter = GoRouter(
             ),
           ],
         ),
-        // 3. Requests
+        // Requests
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -41,7 +84,7 @@ final appRouter = GoRouter(
             ),
           ],
         ),
-        // 4. My Team
+        // My Team
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -50,7 +93,7 @@ final appRouter = GoRouter(
             ),
           ],
         ),
-        // 5. Profile
+        // Profile
         StatefulShellBranch(
           routes: [
             GoRoute(

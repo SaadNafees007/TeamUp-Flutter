@@ -33,7 +33,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     _selectedDepartment = profile.department.isNotEmpty
         ? profile.department
         : AppConstants.departments.first;
-    _selectedSemester = profile.semester;
+    _selectedSemester = profile.semester.clamp(
+      AppConstants.minEligibleSemester,
+      AppConstants.maxEligibleSemester,
+    );
     _selectedProjectType = profile.projectType.isNotEmpty
         ? profile.projectType
         : AppConstants.projectTypes.first;
@@ -104,14 +107,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Semester (FR-1.2: 1 to 8)
+            // Semester (Competition constraint: 4 to 8 only)
             DropdownButtonFormField<int>(
               initialValue: _selectedSemester,
               decoration: const InputDecoration(
-                labelText: 'Current Academic Semester (1 - 8) *',
+                labelText: 'Current Academic Semester (4 - 8) *',
                 prefixIcon: Icon(Icons.school_outlined),
               ),
-              items: List.generate(8, (i) => i + 1).map((sem) {
+              items: AppConstants.eligibleSemesters.map((sem) {
                 return DropdownMenuItem(
                   value: sem,
                   child: Text('Semester $sem'),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/theme/theme_provider.dart';
 import '../../../core/widgets/avatar_widget.dart';
 import '../../../core/widgets/skill_chip.dart';
 import '../../../core/widgets/confirmation_dialog.dart';
 import '../../../data/local_storage/local_store.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/avatar_picker_modal.dart';
 import 'edit_profile_screen.dart';
@@ -57,6 +60,21 @@ class ProfileScreen extends ConsumerWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+              );
+            },
+          ),
+          Consumer(
+            builder: (context, ref, _) {
+              final isDark = ref.watch(themeProvider) == ThemeMode.dark;
+              return IconButton(
+                icon: Icon(
+                  isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+                  color: AppColors.primaryIndigo,
+                ),
+                tooltip: isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                onPressed: () {
+                  ref.read(themeProvider.notifier).toggleTheme();
+                },
               );
             },
           ),
@@ -409,7 +427,6 @@ class ProfileScreen extends ConsumerWidget {
               );
               if (confirmed) {
                 await LocalStore.resetToSeedData();
-                // trigger restart / reload by reading
                 ref.invalidate(profileProvider);
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -422,6 +439,34 @@ class ProfileScreen extends ConsumerWidget {
             },
             icon: const Icon(Icons.restart_alt_rounded, size: 18),
             label: const Text('Reset Competition Demo Data'),
+          ),
+
+          const SizedBox(height: 12),
+
+          // Logout Action (Mandatory Feature)
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.statusRejected,
+              side: const BorderSide(color: AppColors.statusRejected, width: 1.2),
+            ),
+            onPressed: () async {
+              final confirmed = await ConfirmationDialog.show(
+                context,
+                title: 'Log Out',
+                message:
+                    'Are you sure you want to log out of TeamUp? Your local account and profile data will remain securely saved.',
+                confirmText: 'Log Out',
+                isDestructive: true,
+              );
+              if (confirmed) {
+                await ref.read(authProvider.notifier).logout();
+                if (context.mounted) {
+                  context.go('/login');
+                }
+              }
+            },
+            icon: const Icon(Icons.logout_rounded, size: 18),
+            label: const Text('Log Out'),
           ),
 
           const SizedBox(height: 32),
